@@ -13,6 +13,6 @@ fun writeShortcuts(shortcutsRoot: ShortcutsRoot, outStream: OutputStream) {
     val jc = JAXBContext.newInstance(ShortcutsRoot::class.java)
     val marshaller = jc.createMarshaller()
     marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
-    marshaller.setProperty("com.sun.xml.internal.bind.namespacePrefixMapper", AndroidNamespaceMapper())
+    marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", AndroidNamespaceMapper())
     marshaller.marshal(shortcutsRoot, outStream)
 }

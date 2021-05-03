@@ -15,6 +15,10 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     testImplementation("junit", "junit", "4.13.1")
+    implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.2")
+    implementation("org.glassfish.jaxb:jaxb-runtime:2.3.2")
+    implementation("com.sun.xml.bind:jaxb-impl:2.2.11")
+    implementation("com.sun.xml.bind:jaxb-core:2.2.11")
 }
 
 application {

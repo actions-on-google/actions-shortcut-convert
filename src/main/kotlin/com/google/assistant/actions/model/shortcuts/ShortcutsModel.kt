@@ -1,6 +1,6 @@
 package com.google.assistant.actions.model.shortcuts
 
-import com.sun.xml.internal.bind.marshaller.NamespacePrefixMapper
+import com.sun.xml.bind.marshaller.NamespacePrefixMapper
 import javax.xml.bind.annotation.XmlAttribute
 import javax.xml.bind.annotation.XmlElement
 import javax.xml.bind.annotation.XmlRootElement
