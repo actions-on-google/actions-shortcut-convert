@@ -27,7 +27,7 @@ data class Action(
     var queryPatterns: String? = null,
 
     @set:XmlElement(name="fulfillment", required = true)
-    var fulfillment: Fulfillment? = null,
+    var fulfillments: List<Fulfillment> = mutableListOf(),
 
     @set:XmlElement(name="parameter", required = true)
     var parameters: List<Parameter> = mutableListOf(),
@@ -81,6 +81,12 @@ data class ParameterMapping(
 
     @set:XmlAttribute(required = true)
     var urlParameter: String? = null,
+
+    @set:XmlAttribute
+    var required: String? = null,
+
+    @set:XmlAttribute
+    var entityMatchRequired: String? = null,
 )
 
 //
