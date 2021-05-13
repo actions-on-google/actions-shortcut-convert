@@ -139,7 +139,7 @@ data class Parameter(
     var required: String? = null,
 
     @set:XmlAttribute(namespace = ANDROID_NAMESPACE_URI)
-    var entityMatchRequired: String? = null,
+    var shortcutMatchRequired: String? = null,
 
     @set:XmlElement
     var data: Data? = null,
