@@ -5,6 +5,7 @@ import com.google.assistant.actions.model.shortcuts.*
 
 class ShortcutConverter {
 
+    // TODO(paullucas): add more details
     fun convertActionsToShortcuts(actions: ActionsRoot): List<Shortcut> {
         val shortcuts: MutableList<Shortcut> = mutableListOf()
         actions.entitySets.map { entitySet ->
