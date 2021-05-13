@@ -1,5 +1,6 @@
 package com.google.assistant.actions.model.shortcuts
 
+import com.google.assistant.actions.model.actions.Fulfillment
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper
 import javax.xml.bind.annotation.XmlAttribute
 import javax.xml.bind.annotation.XmlElement
@@ -27,8 +28,8 @@ data class Capability(
     @set:XmlAttribute
     var queryPatterns: String? = null,
 
-    @set:XmlElement
-    var intent: CapabilityIntent? = null,
+    @set:XmlElement(name="intent")
+    var intents: List<CapabilityIntent> = mutableListOf(),
 
     @set:XmlElement
     var slice: Slice? = null,
@@ -76,9 +77,13 @@ data class CapabilityIntent(
     @set:XmlAttribute(namespace = ANDROID_NAMESPACE_URI)
     var targetClass: String? = null,
 
+    @set:XmlAttribute(namespace = ANDROID_NAMESPACE_URI)
+    var targetPackage: String? = null,
+
     @set:XmlElement(name = "url-template")
     var urlTemplate: UrlTemplate? = null,
 
+    // TODO: verify whether <parameter> should reside in <shortcut-fulfillment> for Inline inventory @url Fulfillment case
     @set:XmlElement
     var parameter: List<Parameter> = mutableListOf(),
 
@@ -132,13 +137,13 @@ data class Parameter(
     @set:XmlAttribute(required = true, namespace = ANDROID_NAMESPACE_URI)
     var key: String? = null,
 
-    @set:XmlAttribute(name = "mime-type", required = true, namespace = ANDROID_NAMESPACE_URI)
+    @set:XmlAttribute(required = true, namespace = ANDROID_NAMESPACE_URI)
     var mimeType: String? = null,
 
     @set:XmlAttribute(namespace = ANDROID_NAMESPACE_URI)
     var required: String? = null,
 
-    @set:XmlAttribute(namespace = ANDROID_NAMESPACE_URI)
+    @set:XmlAttribute // TOOD: update this namespace with "app:"
     var shortcutMatchRequired: String? = null,
 
     @set:XmlElement
