@@ -7,8 +7,5 @@ fun convertActionsToShortcuts(actions: ActionsRoot): ShortcutsRoot {
     val capabilityConverter = CapabilityConverter()
     val shortcutConverter = ShortcutConverter()
 
-    val capabilities = actions.actions.map { action ->
-        capabilityConverter.convertActionsToShortcuts(action)
-    }
-    return ShortcutsRoot(capabilities, shortcutConverter.convertActionsToShortcuts(actions))
+    return ShortcutsRoot(capabilityConverter.convertActionsToCapabilities(actions), shortcutConverter.convertActionsToShortcuts(actions))
 }

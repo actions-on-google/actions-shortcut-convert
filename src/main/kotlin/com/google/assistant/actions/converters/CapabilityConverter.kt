@@ -6,7 +6,11 @@ import com.google.assistant.actions.model.shortcuts.*
 
 class CapabilityConverter {
 
-    fun convertActionsToShortcuts(action: Action): Capability {
+    fun convertActionsToCapabilities(actions: ActionsRoot): List<Capability> {
+        return actions.actions.map { action -> convertActionToCapability(action) }
+    }
+
+    private fun convertActionToCapability(action: Action): Capability {
         return Capability(
             name = action.intentName,
             intents = action.fulfillments.map { fulfillment ->
