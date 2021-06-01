@@ -66,6 +66,9 @@ data class Parameter(
     @set:XmlAttribute(required = true)
     var name: String? = null,
 
+    @set:XmlAttribute
+    var type: String? = null,
+
     @set:XmlElement(name = "entity-set-reference")
     var entitySetReference: EntitySetReference? = null,
 )
