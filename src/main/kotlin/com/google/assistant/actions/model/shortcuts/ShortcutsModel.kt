@@ -31,8 +31,9 @@ data class Capability(
     @set:XmlElement(name="intent")
     var intents: List<CapabilityIntent> = mutableListOf(),
 
-    @set:XmlElement
-    var slice: Slice? = null,
+    // TODO(tanub): Verify multiple slices allowed.
+    @set:XmlElement(name="slice")
+    var slices: List<Slice> = mutableListOf(),
 )
 
 data class Shortcut(

@@ -2,6 +2,7 @@ package com.google.assistant.actions
 
 import com.google.assistant.actions.model.actions.Action
 import com.google.assistant.actions.model.actions.ActionsRoot
+import com.google.assistant.actions.model.actions.Fulfillment
 import com.google.assistant.actions.model.actions.ParameterMapping
 import com.google.assistant.actions.model.shortcuts.*
 
@@ -12,20 +13,50 @@ class CapabilityConverter {
         return actions.actions.map { action -> convertActionToCapability(action) }
     }
 
-    // TODO(tanub): Add slice fulfillment logic - e.g. <fulfillment> has fulfillmentMode="actions.fulfillment.SLICE"
     private fun convertActionToCapability(action: Action): Capability {
+        val capabilityIntents: MutableList<CapabilityIntent> = mutableListOf()
+        val slices: MutableList<Slice> = mutableListOf()
+        action.fulfillments.map { fulfillment ->
+            if (fulfillment.fulfillmentMode == Constants.SLICE_FULFILLMENT) {
+                slices.add(createSliceFromFulfillment(fulfillment, action))
+            } else {
+                capabilityIntents.add(createCapabilityIntentFromFulfillment(fulfillment, action))
+            }
+        }
         return Capability(
             name = action.intentName,
-            intents = action.fulfillments.map { fulfillment ->
-                CapabilityIntent(
-                    action = Constants.ANDROID_ACTION_VIEW_DEFEAULT_INTENT,
-                    urlTemplate = UrlTemplate(fulfillment.urlTemplate!!),
-                    parameter = fulfillment.parameterMappings.map { parameterMapping ->
-                        convertParameterMappingToParameter(parameterMapping, action.intentName!!, action.parameters)
-                    }
+            intents = capabilityIntents,
+            slices = slices,
+        )
+    }
+
+    private fun createCapabilityIntentFromFulfillment(
+        fulfillment: Fulfillment,
+        action: Action
+    ): CapabilityIntent {
+        return CapabilityIntent(
+            action = Constants.ANDROID_ACTION_VIEW_DEFEAULT_INTENT,
+            urlTemplate = UrlTemplate(fulfillment.urlTemplate!!),
+            parameter = fulfillment.parameterMappings.map { parameterMapping ->
+                convertParameterMappingToParameter(
+                    parameterMapping,
+                    action.intentName!!,
+                    action.parameters
                 )
             }
         )
+    }
+
+    private fun createSliceFromFulfillment(fulfillment: Fulfillment, action: Action): Slice {
+        return Slice(
+            urlTemplate = UrlTemplate(fulfillment.urlTemplate!!),
+            parameter = fulfillment.parameterMappings.map { parameterMapping ->
+                convertParameterMappingToParameter(
+                    parameterMapping,
+                    action.intentName!!,
+                    action.parameters
+                )
+            })
     }
 
     /**
