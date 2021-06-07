@@ -57,13 +57,13 @@ data class Shortcut(
     var disabledMessage: String? = null,
 
     @set:XmlElement
-    var intent: List<ShortcutIntent> = mutableListOf(),
+    var intents: List<ShortcutIntent> = mutableListOf(),
 
-    @set:XmlElement(name = "capability-reference")
-    var capabilityReference: List<CapabilityReference> = mutableListOf(),
+    @set:XmlElement(name = "capability-binding")
+    var capabilityBindings: List<CapabilityBinding> = mutableListOf(),
 
     @set:XmlElement
-    var extra: List<Extra> = mutableListOf(),
+    var extras: List<Extra> = mutableListOf(),
 )
 
 //
@@ -116,6 +116,10 @@ data class ShortcutIntent(
     @set:XmlAttribute(namespace = ANDROID_NAMESPACE_URI)
     var targetClass: String? = null,
 
+    @set:XmlAttribute(namespace = ANDROID_NAMESPACE_URI)
+    var data: String? = null,
+
+
     @set:XmlElement(name = "url-template")
     var urlTemplate: UrlTemplate? = null,
 )
@@ -154,7 +158,7 @@ data class Parameter(
 data class Extra(
 
     @set:XmlAttribute(required = true, namespace = ANDROID_NAMESPACE_URI)
-    var name: String? = null,
+    var key: String? = null,
 
     @set:XmlAttribute(required = true, namespace = ANDROID_NAMESPACE_URI)
     var value: String? = null,
@@ -164,14 +168,29 @@ data class Extra(
 // Children of ShortcutIntent
 //
 
-data class CapabilityReference(
+data class CapabilityBinding(
 
     @set:XmlAttribute(required = true, namespace = ANDROID_NAMESPACE_URI)
-    var capability: String?,
+    var key: String?,
 
-    @set:XmlAttribute(namespace = ANDROID_NAMESPACE_URI)
-    var parameter: String?,
-)
+    @set:XmlElement(name = "parameter-binding")
+    var parameterBinding: List<ParameterBinding> = mutableListOf(),
+    )
+
+//
+// Children of CapabilityBinding
+//
+
+data class ParameterBinding(
+
+    @set:XmlAttribute(required = false, namespace = ANDROID_NAMESPACE_URI)
+    var key: String?,
+
+    @set:XmlAttribute(required = true, namespace = ANDROID_NAMESPACE_URI)
+    var value: String?,
+
+    )
+
 
 //
 // Children of Parameter

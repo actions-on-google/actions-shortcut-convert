@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <actions>
-    <action intentName="actions.intent.POOP">
+    <action intentName="actions.intent.EXERCISE">
         <fulfillment urlTemplate="https://fit-actions.firebaseapp.com/start{?exerciseType}">
             <parameter-mapping
                     intentParameter="exercise.name"
@@ -24,6 +24,8 @@
                 name="@string/activity_running"
                 identifier="RUNNING" />
         <entity
+                sameAs="http://schema.googleapis.com/WalkingActivity"
+                url="myapp://deeplink/one"
                 name="@string/activity_walking"
                 identifier="WALKING" />
         <entity
