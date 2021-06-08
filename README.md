@@ -10,9 +10,9 @@ for more details on the new XML format.
 ## Setup (Recommended)
 
 * IntelliJ IDE (Or any Java/Kotlin IDE)
-* Configure IDE settings for Gradle to use JVM 1.8
+* Configure IDE settings for Gradle to use JVM 1.8 or greater
   (Settings/Preferences -> Build/Execution/Deployment -> Build Tools -> Gradle)
-* Select JDK corresponding to JVM 1.8 in Project Structure dialog
+* Select JDK corresponding to JVM 1.8 (or greater) in Project Structure dialog
   (File -> Project Structure -> Platform Settings -> SDKs)
 
 ## Usage

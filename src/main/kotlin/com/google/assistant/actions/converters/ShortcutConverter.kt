@@ -28,7 +28,7 @@ class ShortcutConverter {
             entitySet.entities.forEach { entity ->
                 // TODO(paullucas): Check if capabilityBinding is needed here
                 var capabilityBinding: CapabilityBinding? =
-                    if (matchingAction.intentName?.startsWith("actions.") == true) {
+                    if (matchingAction.intentName!!.startsWith(Constants.ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE)) {
                         createCapabilityBinding(matchingAction, entity)
                     } else {
                         null
@@ -69,7 +69,7 @@ class ShortcutConverter {
         //  starts with actions.
         return ShortcutIntent(
             // Defaulting to android.intent.action.VIEW and allowing user to override
-            action = "android.intent.action.VIEW",
+            action = Constants.ANDROID_ACTION_VIEW_DEFEAULT_INTENT,
             // TODO(paullucas): Add targetClass details
             data = entity?.url
         );
