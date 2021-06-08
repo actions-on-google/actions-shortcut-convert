@@ -20,15 +20,19 @@ class ShortcutConverter {
 
         val shortcuts: MutableList<Shortcut> = mutableListOf()
         actions.entitySets.forEach { entitySet ->
-            val matchingAction = actionToEntitySetId[entitySet.entitySetId]
+            val matchingAction: Action = actionToEntitySetId[entitySet.entitySetId]!!
             // TODO(paullucas): Handle duplicate cases where there may be more intents/action
 
             val shortcutIdToShortcutMap = HashMap<String, Shortcut>();
 
             entitySet.entities.forEach { entity ->
                 // TODO(paullucas): Check if capabilityBinding is needed here
-                val capabilityBinding: CapabilityBinding =
-                    createCapabilityBindingFromAction(matchingAction, entity)
+                var capabilityBinding: CapabilityBinding? =
+                    if (matchingAction.intentName?.startsWith("actions.") == true) {
+                        createCapabilityBinding(matchingAction, entity)
+                    } else {
+                        null
+                    }
 
                 val intent: ShortcutIntent = createIntentFromAction(matchingAction, entity)
 
@@ -43,10 +47,13 @@ class ShortcutConverter {
                     // No shortcut created for this identifier, proceed with adding new shortcut.
                     val shortcut = Shortcut(
                         shortcutId = id,
+                        shortcutShortLabel = "YOUR_SHORT_LABEL",
                         shortcutLongLabel = entity.name ?: entity.alternateName ?: "",
                         enabled = "false",
                         intents = mutableListOf(intent),
-                        capabilityBindings = mutableListOf(capabilityBinding),
+                        capabilityBindings = if (capabilityBinding != null) mutableListOf(
+                            capabilityBinding
+                        ) else mutableListOf(),
                         extras = extras
                     );
                     shortcuts.add(shortcut)
@@ -57,15 +64,13 @@ class ShortcutConverter {
         return shortcuts
     }
 
-    private fun createIntentFromAction(action: Action?, entity: Entity?): ShortcutIntent {
-        if (action == null) {
-            return ShortcutIntent()
-        }
+    private fun createIntentFromAction(action: Action, entity: Entity?): ShortcutIntent {
         // TODO(paullucas): Handle custom vs BII cases better here and update based on if intentName
         //  starts with actions.
         return ShortcutIntent(
-            action = action.intentName, // Use android.intent.action.VIEW as default
-            targetClass = action.intentName,
+            // Defaulting to android.intent.action.VIEW and allowing user to override
+            action = "android.intent.action.VIEW",
+            // TODO(paullucas): Add targetClass details
             data = entity?.url
         );
     }
@@ -79,29 +84,23 @@ class ShortcutConverter {
         );
     }
 
-    private fun createCapabilityBindingFromAction(
-        action: Action?,
+    private fun createCapabilityBinding(
+        action: Action,
         entity: Entity?
     ): CapabilityBinding {
-        if (action == null) {
-            // TODO(paullucas): remove this text when we confirm action is not null
-            return CapabilityBinding("<TODO DELETE ME>")
-        }
         // TODO(paullucas): Only add capability binding if needed, need to string parse
         return CapabilityBinding(
             key = action.intentName,
-            parameterBinding = mutableListOf(createParameterBindingFromAction(action, entity))
+            parameterBinding = mutableListOf(createParameterBinding(action, entity))
         )
     }
 
-    private fun createParameterBindingFromAction(
+    private fun createParameterBinding(
         action: Action,
         matchingEntity: Entity?
     ): ParameterBinding {
-        // TODO(paullucas): Key = action.fulfillment.parameter.name from action or
-        //  shortcut-fulfillment.parameter.name
         action.parameters.forEach { parameter ->
-            return ParameterBinding(key = parameter.name, value = matchingEntity?.alternateName)
+            return ParameterBinding(key = parameter.name, value = matchingEntity?.name)
         }
         // TODO(paullucas): remove this default and only send back parameter binding when we need
         //  the field
