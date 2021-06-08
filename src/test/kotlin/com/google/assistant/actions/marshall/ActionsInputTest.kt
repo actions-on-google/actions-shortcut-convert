@@ -52,8 +52,8 @@ class ActionsInputTest {
         assertEquals(intentName, actions[0].intentName)
 
         val action = actions[0]
-        assertNotNull(action.fulfillment)
-        val fulfillment = action.fulfillment ?: return
+        assertNotNull(action.fulfillments[0])
+        val fulfillment = action.fulfillments[0] ?: return
         assertEquals(urlTemplate, fulfillment.urlTemplate)
     }
 
@@ -81,13 +81,13 @@ class ActionsInputTest {
         assertEquals(intentName0, actions[0].intentName)
 
         val action0 = actions[0]
-        assertNotNull(action0.fulfillment)
-        val fulfillment0 = action0.fulfillment ?: return
+        assertNotNull(action0.fulfillments[0])
+        val fulfillment0 = action0.fulfillments[0] ?: return
         assertEquals(urlTemplate0, fulfillment0.urlTemplate)
 
         val action1 = actions[1]
-        assertNotNull(action1.fulfillment)
-        val fulfillment1 = action1.fulfillment ?: return
+        assertNotNull(action1.fulfillments[0])
+        val fulfillment1 = action1.fulfillments[0] ?: return
         assertEquals(urlTemplate1, fulfillment1.urlTemplate)
     }
 
@@ -108,7 +108,7 @@ class ActionsInputTest {
         assertEquals(intentName, actions[0].intentName)
 
         val action = actions[0]
-        assertNull(action.fulfillment)
+        assert(action.fulfillments.isNullOrEmpty())
     }
 
     @Test
@@ -178,8 +178,8 @@ class ActionsInputTest {
         assertEquals(queryPatterns, action.queryPatterns)
         assertEquals(2, action.parameters.size)
 
-        assertNotNull(action.fulfillment)
-        val fulfillment = action.fulfillment ?: return
+        assertNotNull(action.fulfillments[0])
+        val fulfillment = action.fulfillments[0] ?: return
         assertEquals(urlTemplate, fulfillment.urlTemplate)
         assertEquals(fulfillmentMode, fulfillment.fulfillmentMode)
         assertEquals(rfa, fulfillment.requiredForegroundActivity)

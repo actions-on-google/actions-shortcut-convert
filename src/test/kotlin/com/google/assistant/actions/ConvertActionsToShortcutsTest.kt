@@ -19,9 +19,9 @@ class ConvertActionsToShortcutsTest {
             actions = listOf(
                 Action(
                     intentName = bii,
-                    fulfillment = Fulfillment(
+                    fulfillments = mutableListOf(Fulfillment(
                         urlTemplate = deeplink
-                    )
+                    ))
                 ),
             ),
         )
@@ -36,7 +36,7 @@ class ConvertActionsToShortcutsTest {
         val capability = capabilities[0]
         assertEquals(bii, capability.name)
 
-        val capabilityIntent = capability.intent
+        val capabilityIntent = capability.intents[0]
         assertNotNull(capabilityIntent)
         assertNotNull(capabilityIntent!!.urlTemplate)
         val urlTemplate = capabilityIntent.urlTemplate ?: return

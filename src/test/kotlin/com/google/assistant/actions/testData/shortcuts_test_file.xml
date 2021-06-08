@@ -1,13 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
-    <capability android:name="actions.intent.POOP">
-        <intent>
+    <capability android:name="actions.intent.EXERCISE">
+        <intent android:action="android.intent.action.VIEW">
+            <parameter android:key="exerciseType" android:mimeType="text/*" android:name="exercise.name"/>
             <url-template android:value="https://fit-actions.firebaseapp.com/start{?exerciseType}"/>
         </intent>
     </capability>
     <capability android:name="actions.intent.STOP_EXERCISE">
-        <intent>
+        <intent android:action="android.intent.action.VIEW">
             <url-template android:value="https://fit-actions.firebaseapp.com/stop"/>
         </intent>
     </capability>
+    <shortcut android:enabled="false" android:shortcutId="RUNNING" android:shortcutLongLabel="@string/activity_running">
+        <capability-binding android:key="actions.intent.EXERCISE">
+            <parameter-binding android:key="exercise.name"/>
+        </capability-binding>
+        <intent android:action="actions.intent.EXERCISE" android:targetClass="actions.intent.EXERCISE"/>
+    </shortcut>
+    <shortcut android:enabled="false" android:shortcutId="WALKING" android:shortcutLongLabel="@string/activity_walking">
+        <capability-binding android:key="actions.intent.EXERCISE">
+            <parameter-binding android:key="exercise.name"/>
+        </capability-binding>
+        <extra android:key="sameAs" android:value="http://schema.googleapis.com/WalkingActivity"/>
+        <intent android:action="actions.intent.EXERCISE" android:data="myapp://deeplink/one" android:targetClass="actions.intent.EXERCISE"/>
+    </shortcut>
+    <shortcut android:enabled="false" android:shortcutId="CYCLING" android:shortcutLongLabel="@string/activity_cycling">
+        <capability-binding android:key="actions.intent.EXERCISE">
+            <parameter-binding android:key="exercise.name"/>
+        </capability-binding>
+        <intent android:action="actions.intent.EXERCISE" android:targetClass="actions.intent.EXERCISE"/>
+    </shortcut>
 </shortcuts>
