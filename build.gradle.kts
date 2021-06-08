@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.4.30"
+    kotlin("jvm") version "1.5.10"
     application
 }
 
@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    testImplementation("junit", "junit", "4.13.1")
+    testImplementation("junit", "junit", "4.13.2")
     implementation("jakarta.xml.bind:jakarta.xml.bind-api:2.3.2")
     implementation("org.glassfish.jaxb:jaxb-runtime:2.3.2")
     implementation("com.sun.xml.bind:jaxb-impl:2.2.11")
