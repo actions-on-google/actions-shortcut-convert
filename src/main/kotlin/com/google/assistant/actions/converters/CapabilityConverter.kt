@@ -16,9 +16,12 @@ class CapabilityConverter {
     private fun convertActionToCapability(action: Action): Capability {
         val capabilityIntents: MutableList<CapabilityIntent> = mutableListOf()
         val slices: MutableList<Slice> = mutableListOf()
+        var shortcutFulfillments: MutableList<ShortcutFulfillment> = mutableListOf()
         action.fulfillments.map { fulfillment ->
             if (fulfillment.fulfillmentMode == Constants.SLICE_FULFILLMENT) {
                 slices.add(createSliceFromFulfillment(fulfillment, action))
+            } else if (!fulfillment.urlTemplate!!.isNullOrEmpty() && fulfillment.urlTemplate!! == Constants.AT_URL_FULFILLMENT) {
+                shortcutFulfillments = createShortcutFulfillmentsFromAction(action)
             } else {
                 capabilityIntents.add(createCapabilityIntentFromFulfillment(fulfillment, action))
             }
@@ -27,7 +30,24 @@ class CapabilityConverter {
             name = action.intentName,
             intents = capabilityIntents,
             slices = slices,
+            shortcutFulfillments = shortcutFulfillments,
         )
+    }
+
+    private fun createShortcutFulfillmentsFromAction(action: Action): MutableList<ShortcutFulfillment> {
+        val shortcutFulfillments: MutableList<ShortcutFulfillment> = mutableListOf()
+        // Different shortcuts can be bound to different parameters for direct shortcut fulfillment.
+        // Hence create a <shortcut-fulfillment> block per parameter.
+        action.parameters.map { parameter ->
+            shortcutFulfillments.add(
+                ShortcutFulfillment(
+                    parameter = Parameter(
+                        name = if (!parameter.name!!.isNullOrEmpty()) parameter.name else "YOUR_PARAMETER_NAME"
+                    )
+                )
+            )
+        }
+        return shortcutFulfillments
     }
 
     private fun createCapabilityIntentFromFulfillment(
@@ -87,7 +107,10 @@ class CapabilityConverter {
         else {
             // Custom intent
             val actionParameter =
-                resolveActionParameterForIntentParameterName(parameterMapping.intentParameter!!, actionParameters)
+                resolveActionParameterForIntentParameterName(
+                    parameterMapping.intentParameter!!,
+                    actionParameters
+                )
             if (actionParameter != null) {
                 return actionParameter.type!!
             }

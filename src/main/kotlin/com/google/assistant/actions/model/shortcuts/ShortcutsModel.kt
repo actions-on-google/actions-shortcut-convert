@@ -34,6 +34,9 @@ data class Capability(
     // TODO(tanub): Verify multiple slices allowed.
     @set:XmlElement(name="slice")
     var slices: List<Slice> = mutableListOf(),
+
+    @set:XmlElement(name="shortcut-fulfillment")
+    var shortcutFulfillments: List<ShortcutFulfillment> = mutableListOf(),
 )
 
 data class Shortcut(
@@ -84,7 +87,6 @@ data class CapabilityIntent(
     @set:XmlElement(name = "url-template")
     var urlTemplate: UrlTemplate? = null,
 
-    // TODO: verify whether <parameter> should reside in <shortcut-fulfillment> for Inline inventory @url Fulfillment case
     @set:XmlElement
     var parameter: List<Parameter> = mutableListOf(),
 
@@ -99,6 +101,12 @@ data class Slice(
 
     @set:XmlElement
     var parameter: List<Parameter> = mutableListOf(),
+)
+
+data class ShortcutFulfillment(
+
+    @set:XmlElement
+    var parameter: Parameter? = null,
 )
 
 //
