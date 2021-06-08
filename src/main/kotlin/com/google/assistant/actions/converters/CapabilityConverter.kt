@@ -1,9 +1,6 @@
 package com.google.assistant.actions.converters
 
-import com.google.assistant.actions.ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE
-import com.google.assistant.actions.ANDROID_ACTION_VIEW_DEFAULT_INTENT
-import com.google.assistant.actions.BII_INTENT_PARAMETER_MIME_TYPE
-import com.google.assistant.actions.SLICE_FULFILLMENT
+import com.google.assistant.actions.*
 import com.google.assistant.actions.model.actions.Action
 import com.google.assistant.actions.model.actions.ActionsRoot
 import com.google.assistant.actions.model.actions.Fulfillment
@@ -17,9 +14,9 @@ class CapabilityConverter {
     }
 
     private fun convertActionToCapability(action: Action): Capability {
-        val capabilityIntents: MutableList<CapabilityIntent> = mutableListOf()
-        val slices: MutableList<Slice> = mutableListOf()
-        var shortcutFulfillments: MutableList<ShortcutFulfillment> = mutableListOf()
+        val capabilityIntents = mutableListOf<CapabilityIntent>()
+        val slices = mutableListOf<Slice>()
+        var shortcutFulfillments = mutableListOf<ShortcutFulfillment>()
         action.fulfillments.map { fulfillment ->
             if (fulfillment.fulfillmentMode == SLICE_FULFILLMENT) {
                 slices.add(createSliceFromFulfillment(fulfillment, action))
@@ -105,8 +102,9 @@ class CapabilityConverter {
         parameterMapping: ParameterMapping,
         actionParameters: List<com.google.assistant.actions.model.actions.Parameter>
     ): String? {
-        return if (intentName.startsWith(ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE)) // BII
+        return if (intentName.startsWith(ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE)) { // BII
             BII_INTENT_PARAMETER_MIME_TYPE
+        }
         else {
             // Custom intent
             val actionParameter =

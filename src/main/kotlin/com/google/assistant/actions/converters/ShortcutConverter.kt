@@ -14,7 +14,7 @@ class ShortcutConverter {
 
     fun convertActionsToShortcuts(actions: ActionsRoot): List<Shortcut> {
         // Creates a map of actions to entitySetIds for use when creating the <shortcut> tags
-        val actionToEntitySetId = HashMap<String, Action>()
+        val actionToEntitySetId = mutableMapOf<String, Action>()
         actions.actions.forEach { action ->
             val entitySetId = getEntitySetIdForAction(action)
             if (entitySetId != null && entitySetId.isNotEmpty()) {
@@ -22,7 +22,7 @@ class ShortcutConverter {
             }
         }
 
-        val shortcuts: MutableList<Shortcut> = mutableListOf()
+        val shortcuts = mutableListOf<Shortcut>()
         actions.entitySets.forEach { entitySet ->
             createShortcutsFromEntitySets(entitySet, actionToEntitySetId, shortcuts)
         }
@@ -97,7 +97,8 @@ class ShortcutConverter {
             return null
         }
         return Extra(
-            key = "sameAs", value = entity?.sameAs
+            key = "sameAs",
+            value = entity?.sameAs
         )
     }
 
