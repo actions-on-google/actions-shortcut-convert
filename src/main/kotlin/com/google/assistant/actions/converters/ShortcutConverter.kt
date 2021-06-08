@@ -1,5 +1,7 @@
-package com.google.assistant.actions
+package com.google.assistant.actions.converters
 
+import com.google.assistant.actions.ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE
+import com.google.assistant.actions.ANDROID_ACTION_VIEW_DEFAULT_INTENT
 import com.google.assistant.actions.model.actions.ActionsRoot
 import com.google.assistant.actions.model.actions.Action
 import com.google.assistant.actions.model.actions.Entity
@@ -12,7 +14,7 @@ class ShortcutConverter {
 
     fun convertActionsToShortcuts(actions: ActionsRoot): List<Shortcut> {
         // Creates a map of actions to entitySetIds for use when creating the <shortcut> tags
-        val actionToEntitySetId = HashMap<String, Action>();
+        val actionToEntitySetId = HashMap<String, Action>()
         actions.actions.forEach { action ->
             val entitySetId = getEntitySetIdForAction(action)
             if (entitySetId != null && entitySetId.isNotEmpty()) {
@@ -44,7 +46,7 @@ class ShortcutConverter {
 
         entitySet.entities.forEach { entity ->
             // TODO(paullucas): Check if capabilityBinding is needed here
-            var capabilityBinding: CapabilityBinding? =
+            val capabilityBinding: CapabilityBinding? =
                 if (matchingAction.intentName!!.startsWith(ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE)) {
                     createCapabilityBinding(matchingAction, entity)
                 } else {
@@ -54,7 +56,7 @@ class ShortcutConverter {
             val intent: ShortcutIntent = createIntentFromEntity(entity)
 
             val id = entity.identifier ?: ""
-            val extra = createExtraFromEntity(entity);
+            val extra = createExtraFromEntity(entity)
             val extras = if (extra != null) mutableListOf(extra) else mutableListOf()
             if (shortcutIdToShortcutMap.containsKey(id)) {
                 if (extra != null) {
@@ -63,7 +65,7 @@ class ShortcutConverter {
             } else {
                 // No shortcut created for this identifier, proceed with adding new shortcut.
                 val shortcut = Shortcut(
-                    shortcutId = if(!id.isEmpty()) id else "YOUR_SHORTCUT_ID_" + Random.nextInt(0, 100),
+                    shortcutId = id.ifEmpty { "YOUR_SHORTCUT_ID_" + Random.nextInt(0, 100) },
                     shortcutShortLabel = "YOUR_SHORT_LABEL",
                     shortcutLongLabel = entity.name ?: entity.alternateName ?: "",
                     enabled = "false",
@@ -72,7 +74,7 @@ class ShortcutConverter {
                         capabilityBinding
                     ) else mutableListOf(),
                     extras = extras
-                );
+                )
                 shortcuts.add(shortcut)
                 shortcutIdToShortcutMap[id] = shortcut
             }
@@ -84,10 +86,10 @@ class ShortcutConverter {
         //  starts with actions.
         return ShortcutIntent(
             // Defaulting to android.intent.action.VIEW and allowing user to override
-            action = ANDROID_ACTION_VIEW_DEFEAULT_INTENT,
+            action = ANDROID_ACTION_VIEW_DEFAULT_INTENT,
             // TODO(paullucas): Add targetClass details
             data = entity?.url
-        );
+        )
     }
 
     private fun createExtraFromEntity(entity: Entity?): Extra? {
@@ -96,7 +98,7 @@ class ShortcutConverter {
         }
         return Extra(
             key = "sameAs", value = entity?.sameAs
-        );
+        )
     }
 
     private fun createCapabilityBinding(
@@ -132,8 +134,8 @@ class ShortcutConverter {
             ) {
                 return parameter.entitySetReference!!.entitySetId
             }
-            return parameter.entitySetReference?.entitySetId ?: "";
+            return parameter.entitySetReference?.entitySetId ?: ""
         }
-        return null;
+        return null
     }
 }

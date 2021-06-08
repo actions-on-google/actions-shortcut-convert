@@ -1,5 +1,9 @@
-package com.google.assistant.actions
+package com.google.assistant.actions.converters
 
+import com.google.assistant.actions.ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE
+import com.google.assistant.actions.ANDROID_ACTION_VIEW_DEFAULT_INTENT
+import com.google.assistant.actions.BII_INTENT_PARAMETER_MIME_TYPE
+import com.google.assistant.actions.SLICE_FULFILLMENT
 import com.google.assistant.actions.model.actions.Action
 import com.google.assistant.actions.model.actions.ActionsRoot
 import com.google.assistant.actions.model.actions.Fulfillment
@@ -54,7 +58,7 @@ class CapabilityConverter {
         action: Action
     ): CapabilityIntent {
         return CapabilityIntent(
-            action = ANDROID_ACTION_VIEW_DEFEAULT_INTENT,
+            action = ANDROID_ACTION_VIEW_DEFAULT_INTENT,
             urlTemplate = UrlTemplate(fulfillment.urlTemplate!!),
             parameter = fulfillment.parameterMappings.map { parameterMapping ->
                 convertParameterMappingToParameter(

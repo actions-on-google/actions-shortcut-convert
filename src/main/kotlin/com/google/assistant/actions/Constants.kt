@@ -1,6 +1,6 @@
 package com.google.assistant.actions
 
-const val ANDROID_ACTION_VIEW_DEFEAULT_INTENT = "android.intent.action.VIEW"
+const val ANDROID_ACTION_VIEW_DEFAULT_INTENT = "android.intent.action.VIEW"
 const val ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE = "actions.intent"
 const val BII_INTENT_PARAMETER_MIME_TYPE = "text/*"
 const val SLICE_FULFILLMENT = "actions.fulfillment.SLICE"

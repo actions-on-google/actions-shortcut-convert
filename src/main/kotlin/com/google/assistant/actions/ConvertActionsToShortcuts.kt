@@ -1,5 +1,7 @@
 package com.google.assistant.actions
 
+import com.google.assistant.actions.converters.CapabilityConverter
+import com.google.assistant.actions.converters.ShortcutConverter
 import com.google.assistant.actions.model.actions.ActionsRoot
 import com.google.assistant.actions.model.shortcuts.*
 
