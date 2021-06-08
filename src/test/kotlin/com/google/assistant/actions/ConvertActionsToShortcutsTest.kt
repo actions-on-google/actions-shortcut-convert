@@ -38,7 +38,7 @@ class ConvertActionsToShortcutsTest {
 
         val capabilityIntent = capability.intents[0]
         assertNotNull(capabilityIntent)
-        assertNotNull(capabilityIntent!!.urlTemplate)
+        assertNotNull(capabilityIntent.urlTemplate)
         val urlTemplate = capabilityIntent.urlTemplate ?: return
         assertEquals(deeplink, urlTemplate.value)
 
