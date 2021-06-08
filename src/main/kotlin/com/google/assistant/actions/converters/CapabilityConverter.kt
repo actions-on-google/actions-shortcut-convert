@@ -8,7 +8,6 @@ import com.google.assistant.actions.model.shortcuts.*
 
 class CapabilityConverter {
 
-
     fun convertActionsToCapabilities(actions: ActionsRoot): List<Capability> {
         return actions.actions.map { action -> convertActionToCapability(action) }
     }
@@ -18,9 +17,9 @@ class CapabilityConverter {
         val slices: MutableList<Slice> = mutableListOf()
         var shortcutFulfillments: MutableList<ShortcutFulfillment> = mutableListOf()
         action.fulfillments.map { fulfillment ->
-            if (fulfillment.fulfillmentMode == Constants.SLICE_FULFILLMENT) {
+            if (fulfillment.fulfillmentMode == SLICE_FULFILLMENT) {
                 slices.add(createSliceFromFulfillment(fulfillment, action))
-            } else if (!fulfillment.urlTemplate!!.isNullOrEmpty() && fulfillment.urlTemplate!! == Constants.AT_URL_FULFILLMENT) {
+            } else if (!fulfillment.urlTemplate!!.isNullOrEmpty() && fulfillment.urlTemplate!! == AT_URL_FULFILLMENT) {
                 shortcutFulfillments = createShortcutFulfillmentsFromAction(action)
             } else {
                 capabilityIntents.add(createCapabilityIntentFromFulfillment(fulfillment, action))
@@ -55,7 +54,7 @@ class CapabilityConverter {
         action: Action
     ): CapabilityIntent {
         return CapabilityIntent(
-            action = Constants.ANDROID_ACTION_VIEW_DEFEAULT_INTENT,
+            action = ANDROID_ACTION_VIEW_DEFEAULT_INTENT,
             urlTemplate = UrlTemplate(fulfillment.urlTemplate!!),
             parameter = fulfillment.parameterMappings.map { parameterMapping ->
                 convertParameterMappingToParameter(
@@ -102,8 +101,8 @@ class CapabilityConverter {
         parameterMapping: ParameterMapping,
         actionParameters: List<com.google.assistant.actions.model.actions.Parameter>
     ): String? {
-        return if (intentName.startsWith(Constants.ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE)) // BII
-            Constants.BII_INTENT_PARAMETER_MIME_TYPE
+        return if (intentName.startsWith(ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE)) // BII
+            BII_INTENT_PARAMETER_MIME_TYPE
         else {
             // Custom intent
             val actionParameter =
