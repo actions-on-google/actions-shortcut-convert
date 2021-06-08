@@ -34,7 +34,7 @@ class ShortcutConverter {
                         null
                     }
 
-                val intent: ShortcutIntent = createIntentFromAction(matchingAction, entity)
+                val intent: ShortcutIntent = createIntentFromEntity(entity)
 
                 val id = entity.identifier ?: ""
                 val extra = createExtraFromEntity(entity);
@@ -64,7 +64,7 @@ class ShortcutConverter {
         return shortcuts
     }
 
-    private fun createIntentFromAction(action: Action, entity: Entity?): ShortcutIntent {
+    private fun createIntentFromEntity(entity: Entity?): ShortcutIntent {
         // TODO(paullucas): Handle custom vs BII cases better here and update based on if intentName
         //  starts with actions.
         return ShortcutIntent(
