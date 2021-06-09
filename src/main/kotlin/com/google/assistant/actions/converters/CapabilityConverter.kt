@@ -101,9 +101,9 @@ class CapabilityConverter {
         intentName: String,
         parameterMapping: ParameterMapping,
         actionParameters: List<com.google.assistant.actions.model.actions.Parameter>
-    ): String {
-        if (intentName.startsWith(Constants.ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE)) // BII
-            return Constants.BII_INTENT_PARAMETER_MIME_TYPE
+    ): String? {
+        return if (intentName.startsWith(Constants.ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE)) // BII
+            Constants.BII_INTENT_PARAMETER_MIME_TYPE
         else {
             // Custom intent
             val actionParameter =
@@ -111,11 +111,11 @@ class CapabilityConverter {
                     parameterMapping.intentParameter!!,
                     actionParameters
                 )
-            if (actionParameter != null) {
-                return actionParameter.type!!
+            if (!actionParameter?.entitySetReference?.entitySetId.isNullOrEmpty())
+                return null
+            else {
+                actionParameter?.type ?: "YOUR_MIME_TYPE"
             }
-            // Fall back
-            return "YOUR_MIME_TYPE"
         }
     }
 
