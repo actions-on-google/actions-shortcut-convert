@@ -3,8 +3,10 @@ package com.google.assistant.actions
 import com.google.assistant.actions.model.actions.ActionsRoot
 import com.google.assistant.actions.model.actions.Action
 import com.google.assistant.actions.model.actions.Entity
+import com.google.assistant.actions.model.actions.EntitySet
 
 import com.google.assistant.actions.model.shortcuts.*
+import kotlin.random.Random
 
 class ShortcutConverter {
 
@@ -20,48 +22,61 @@ class ShortcutConverter {
 
         val shortcuts: MutableList<Shortcut> = mutableListOf()
         actions.entitySets.forEach { entitySet ->
-            val matchingAction: Action = actionToEntitySetId[entitySet.entitySetId]!!
-            // TODO(paullucas): Handle duplicate cases where there may be more intents/action
-
-            val shortcutIdToShortcutMap = HashMap<String, Shortcut>();
-
-            entitySet.entities.forEach { entity ->
-                // TODO(paullucas): Check if capabilityBinding is needed here
-                var capabilityBinding: CapabilityBinding? =
-                    if (matchingAction.intentName!!.startsWith(Constants.ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE)) {
-                        createCapabilityBinding(matchingAction, entity)
-                    } else {
-                        null
-                    }
-
-                val intent: ShortcutIntent = createIntentFromEntity(entity)
-
-                val id = entity.identifier ?: ""
-                val extra = createExtraFromEntity(entity);
-                val extras = if (extra != null) mutableListOf(extra) else mutableListOf()
-                if (shortcutIdToShortcutMap.containsKey(id)) {
-                    if (extra != null) {
-                        shortcutIdToShortcutMap[id]!!.extras += extra
-                    }
-                } else {
-                    // No shortcut created for this identifier, proceed with adding new shortcut.
-                    val shortcut = Shortcut(
-                        shortcutId = id,
-                        shortcutShortLabel = "YOUR_SHORT_LABEL",
-                        shortcutLongLabel = entity.name ?: entity.alternateName ?: "",
-                        enabled = "false",
-                        intents = mutableListOf(intent),
-                        capabilityBindings = if (capabilityBinding != null) mutableListOf(
-                            capabilityBinding
-                        ) else mutableListOf(),
-                        extras = extras
-                    );
-                    shortcuts.add(shortcut)
-                    shortcutIdToShortcutMap[id] = shortcut
-                }
+            createShortcutsFromEntitySets(entitySet, actionToEntitySetId, shortcuts)
+        }
+        actions.actions.forEach { action ->
+            action.entitySets.forEach { entitySet ->
+                createShortcutsFromEntitySets(entitySet, actionToEntitySetId, shortcuts)
             }
         }
         return shortcuts
+    }
+
+    private fun createShortcutsFromEntitySets(
+        entitySet: EntitySet,
+        actionToEntitySetId: Map<String, Action>,
+        shortcuts: MutableList<Shortcut>
+    ) {
+        val matchingAction: Action = actionToEntitySetId[entitySet.entitySetId]!!
+        // TODO(paullucas): Handle duplicate cases where there may be more intents/action
+
+        val shortcutIdToShortcutMap = HashMap<String, Shortcut>()
+
+        entitySet.entities.forEach { entity ->
+            // TODO(paullucas): Check if capabilityBinding is needed here
+            var capabilityBinding: CapabilityBinding? =
+                if (matchingAction.intentName!!.startsWith(Constants.ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE)) {
+                    createCapabilityBinding(matchingAction, entity)
+                } else {
+                    null
+                }
+
+            val intent: ShortcutIntent = createIntentFromEntity(entity)
+
+            val id = entity.identifier ?: ""
+            val extra = createExtraFromEntity(entity);
+            val extras = if (extra != null) mutableListOf(extra) else mutableListOf()
+            if (shortcutIdToShortcutMap.containsKey(id)) {
+                if (extra != null) {
+                    shortcutIdToShortcutMap[id]!!.extras += extra
+                }
+            } else {
+                // No shortcut created for this identifier, proceed with adding new shortcut.
+                val shortcut = Shortcut(
+                    shortcutId = if(!id.isEmpty()) id else "YOUR_SHORTCUT_ID_" + Random.nextInt(0, 100),
+                    shortcutShortLabel = "YOUR_SHORT_LABEL",
+                    shortcutLongLabel = entity.name ?: entity.alternateName ?: "",
+                    enabled = "false",
+                    intents = mutableListOf(intent),
+                    capabilityBindings = if (capabilityBinding != null) mutableListOf(
+                        capabilityBinding
+                    ) else mutableListOf(),
+                    extras = extras
+                );
+                shortcuts.add(shortcut)
+                shortcutIdToShortcutMap[id] = shortcut
+            }
+        }
     }
 
     private fun createIntentFromEntity(entity: Entity?): ShortcutIntent {

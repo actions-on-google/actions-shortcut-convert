@@ -31,7 +31,11 @@ data class Action(
 
     @set:XmlElement(name="parameter", required = true)
     var parameters: List<Parameter> = mutableListOf(),
-)
+
+    @set:XmlElement(name="entity-set", required = false)
+    var entitySets: List<EntitySet> = mutableListOf(),
+
+    )
 
 data class EntitySet(
 
