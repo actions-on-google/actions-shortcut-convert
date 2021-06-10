@@ -2,11 +2,10 @@ package com.google.assistant.actions.converters
 
 import com.google.assistant.actions.ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE
 import com.google.assistant.actions.ANDROID_ACTION_VIEW_DEFAULT_INTENT
-import com.google.assistant.actions.model.actions.ActionsRoot
 import com.google.assistant.actions.model.actions.Action
+import com.google.assistant.actions.model.actions.ActionsRoot
 import com.google.assistant.actions.model.actions.Entity
 import com.google.assistant.actions.model.actions.EntitySet
-
 import com.google.assistant.actions.model.shortcuts.*
 import kotlin.random.Random
 
@@ -39,15 +38,17 @@ class ShortcutConverter {
         actionToEntitySetId: Map<String, Action>,
         shortcuts: MutableList<Shortcut>
     ) {
-        val matchingAction: Action = actionToEntitySetId[entitySet.entitySetId]!!
+        val matchingAction = actionToEntitySetId[entitySet.entitySetId] ?: return
         // TODO(paullucas): Handle duplicate cases where there may be more intents/action
-
         val shortcutIdToShortcutMap = HashMap<String, Shortcut>()
 
         entitySet.entities.forEach { entity ->
-            // TODO(paullucas): Check if capabilityBinding is needed here
+            val intentName = matchingAction.intentName
             val capabilityBinding: CapabilityBinding? =
-                if (matchingAction.intentName!!.startsWith(ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE)) {
+                if (!intentName.isNullOrEmpty() && intentName.startsWith(
+                        ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE
+                    )
+                ) {
                     createCapabilityBinding(matchingAction, entity)
                 } else {
                     null
@@ -130,12 +131,7 @@ class ShortcutConverter {
 
     private fun getEntitySetIdForAction(action: Action): String? {
         action.parameters.forEach { parameter ->
-            if (parameter.entitySetReference != null &&
-                parameter.entitySetReference!!.entitySetId != null
-            ) {
-                return parameter.entitySetReference!!.entitySetId
-            }
-            return parameter.entitySetReference?.entitySetId ?: ""
+            return parameter.entitySetReference?.entitySetId
         }
         return null
     }

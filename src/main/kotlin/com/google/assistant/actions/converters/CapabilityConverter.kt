@@ -18,9 +18,10 @@ class CapabilityConverter {
         val slices = mutableListOf<Slice>()
         var shortcutFulfillments = mutableListOf<ShortcutFulfillment>()
         action.fulfillments.map { fulfillment ->
+            val urlTemplate = fulfillment.urlTemplate
             if (fulfillment.fulfillmentMode == SLICE_FULFILLMENT) {
                 slices.add(createSliceFromFulfillment(fulfillment, action))
-            } else if (!fulfillment.urlTemplate!!.isNullOrEmpty() && fulfillment.urlTemplate!! == AT_URL_FULFILLMENT) {
+            } else if (!urlTemplate.isNullOrEmpty() && urlTemplate == AT_URL_FULFILLMENT) {
                 shortcutFulfillments = createShortcutFulfillmentsFromAction(action)
             } else {
                 capabilityIntents.add(createCapabilityIntentFromFulfillment(fulfillment, action))
@@ -39,10 +40,11 @@ class CapabilityConverter {
         // Different shortcuts can be bound to different parameters for direct shortcut fulfillment.
         // Hence create a <shortcut-fulfillment> block per parameter.
         action.parameters.map { parameter ->
+            val paramName = parameter.name
             shortcutFulfillments.add(
                 ShortcutFulfillment(
                     parameter = Parameter(
-                        name = if (!parameter.name!!.isNullOrEmpty()) parameter.name else "YOUR_PARAMETER_NAME"
+                        name = if (!paramName.isNullOrEmpty()) paramName else "YOUR_PARAMETER_NAME"
                     )
                 )
             )
@@ -54,13 +56,14 @@ class CapabilityConverter {
         fulfillment: Fulfillment,
         action: Action
     ): CapabilityIntent {
+        val urlTemplate = fulfillment.urlTemplate
         return CapabilityIntent(
             action = ANDROID_ACTION_VIEW_DEFAULT_INTENT,
-            urlTemplate = UrlTemplate(fulfillment.urlTemplate!!),
+            urlTemplate = if (!urlTemplate.isNullOrEmpty()) UrlTemplate(urlTemplate) else null,
             parameter = fulfillment.parameterMappings.map { parameterMapping ->
                 convertParameterMappingToParameter(
                     parameterMapping,
-                    action.intentName!!,
+                    action.intentName ?: DEFAULT_INTENT_NAME,
                     action.parameters
                 )
             }
@@ -68,19 +71,20 @@ class CapabilityConverter {
     }
 
     private fun createSliceFromFulfillment(fulfillment: Fulfillment, action: Action): Slice {
+        val urlTemplate = fulfillment.urlTemplate
         return Slice(
-            urlTemplate = UrlTemplate(fulfillment.urlTemplate!!),
+            urlTemplate = if (!urlTemplate.isNullOrEmpty()) UrlTemplate(urlTemplate) else null,
             parameter = fulfillment.parameterMappings.map { parameterMapping ->
                 convertParameterMappingToParameter(
                     parameterMapping,
-                    action.intentName!!,
+                    action.intentName ?: DEFAULT_INTENT_NAME,
                     action.parameters
                 )
             })
     }
 
     /**
-     * Converts a ParameterMapping to a Parameter given <aarameter>s in the <action>.
+     * Converts a ParameterMapping to a Parameter given <parameter>s in the <action>.
      */
     private fun convertParameterMappingToParameter(
         parameterMapping: ParameterMapping,
@@ -104,12 +108,11 @@ class CapabilityConverter {
     ): String? {
         return if (intentName.startsWith(ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE)) { // BII
             BII_INTENT_PARAMETER_MIME_TYPE
-        }
-        else {
+        } else {
             // Custom intent
             val actionParameter =
                 resolveActionParameterForIntentParameterName(
-                    parameterMapping.intentParameter!!,
+                    parameterMapping.intentParameter ?: DEFAULT_INTENT_PARAMETER,
                     actionParameters
                 )
             if (!actionParameter?.entitySetReference?.entitySetId.isNullOrEmpty())

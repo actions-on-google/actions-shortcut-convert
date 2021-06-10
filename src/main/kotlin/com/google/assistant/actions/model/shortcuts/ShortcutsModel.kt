@@ -1,6 +1,5 @@
 package com.google.assistant.actions.model.shortcuts
 
-import com.google.assistant.actions.model.actions.Fulfillment
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper
 import javax.xml.bind.annotation.XmlAttribute
 import javax.xml.bind.annotation.XmlElement
@@ -28,14 +27,14 @@ data class Capability(
     @set:XmlAttribute
     var queryPatterns: String? = null,
 
-    @set:XmlElement(name="intent")
+    @set:XmlElement(name = "intent")
     var intents: List<CapabilityIntent> = mutableListOf(),
 
     // TODO(tanub): Verify multiple slices allowed.
-    @set:XmlElement(name="slice")
+    @set:XmlElement(name = "slice")
     var slices: List<Slice> = mutableListOf(),
 
-    @set:XmlElement(name="shortcut-fulfillment")
+    @set:XmlElement(name = "shortcut-fulfillment")
     var shortcutFulfillments: List<ShortcutFulfillment> = mutableListOf(),
 )
 
@@ -156,7 +155,7 @@ data class Parameter(
     @set:XmlAttribute(namespace = ANDROID_NAMESPACE_URI)
     var required: String? = null,
 
-    @set:XmlAttribute // TOOD: update this namespace with "app:"
+    @set:XmlAttribute // TOOD(tanub): update this namespace with "app:"
     var shortcutMatchRequired: String? = null,
 
     @set:XmlElement
@@ -183,7 +182,7 @@ data class CapabilityBinding(
 
     @set:XmlElement(name = "parameter-binding")
     var parameterBinding: List<ParameterBinding> = mutableListOf(),
-    )
+)
 
 //
 // Children of CapabilityBinding
@@ -212,7 +211,11 @@ data class Data(
 
 class AndroidNamespaceMapper : NamespacePrefixMapper() {
 
-    override fun getPreferredPrefix(namespaceUri: String?, suggestion: String?, requirePrefix: Boolean): String? {
+    override fun getPreferredPrefix(
+        namespaceUri: String?,
+        suggestion: String?,
+        requirePrefix: Boolean
+    ): String? {
         if (ANDROID_NAMESPACE_URI == namespaceUri) {
             return "android"
         }
