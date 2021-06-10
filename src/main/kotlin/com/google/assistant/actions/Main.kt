@@ -2,6 +2,7 @@ package com.google.assistant.actions
 
 import com.google.assistant.actions.marshall.readActions
 import com.google.assistant.actions.marshall.writeShortcuts
+import com.google.assistant.actions.processors.processActionsXml
 import java.io.File
 
 fun main(args: Array<String>) {
@@ -21,7 +22,7 @@ fun main(args: Array<String>) {
         throw Exception("Shortcuts argument parent directory is not writable (was: $shortcutsFile)")
     }
 
-    val actionsRoot = actionsFile.inputStream().use { readActions(it) }
+    val actionsRoot = processActionsXml(actionsFile).use { readActions(it) }
     val shortcutsRoot = convertActionsToShortcuts(actionsRoot)
     shortcutsFile.outputStream().use { writeShortcuts(shortcutsRoot, it) }
 }
