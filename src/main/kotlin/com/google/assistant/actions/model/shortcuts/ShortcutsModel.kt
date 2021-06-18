@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlElement
 import javax.xml.bind.annotation.XmlRootElement
 
 private const val ANDROID_NAMESPACE_URI = "http://schemas.android.com/apk/res/android"
+private const val APP_NAMESPACE = "app"
 
 @XmlRootElement(name = "shortcuts")
 data class ShortcutsRoot(
@@ -24,7 +25,7 @@ data class Capability(
     @set:XmlAttribute(required = true, namespace = ANDROID_NAMESPACE_URI)
     var name: String? = null,
 
-    @set:XmlAttribute
+    @set:XmlAttribute(namespace = APP_NAMESPACE)
     var queryPatterns: String? = null,
 
     @set:XmlElement(name = "intent")
@@ -218,6 +219,8 @@ class AndroidNamespaceMapper : NamespacePrefixMapper() {
     ): String? {
         if (ANDROID_NAMESPACE_URI == namespaceUri) {
             return "android"
+        } else if (APP_NAMESPACE == namespaceUri) {
+            return namespaceUri
         }
         return suggestion
     }

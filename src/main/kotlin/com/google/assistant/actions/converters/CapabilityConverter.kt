@@ -27,6 +27,7 @@ private fun convertActionToCapability(action: Action): Capability {
     }
     return Capability(
         name = action.intentName,
+        queryPatterns = action.queryPatterns,
         intents = capabilityIntents,
         slices = slices,
         shortcutFulfillments = shortcutFulfillments,
