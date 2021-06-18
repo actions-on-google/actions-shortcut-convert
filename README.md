@@ -28,8 +28,19 @@ Once your environment is set up, run this command from the root directory of the
 Manually you'll need to review your new shortcuts.xml as well as test the output in the
 [App Actions Test Tool](https://developers.google.com/assistant/app/test-tool).
 
+##### Post-processing and Manual Inspection
 
-##### Post-processing
+###### XML Character Entity References
+
+The converter escapes any literal `&` by converting it to `&amp;` and assumes any sequence of 10 characters surrounded
+by `&` and `;` is a XML entity
+reference [(list of XML character entity references)](https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references).
+
+It is *highly* recommended that input actions.xml is well-formed XML with properly escaped characters. To ensure the
+converter escaped characters as intended, it is also recommended that you verify that the generated shortcuts.xml
+contains properly escaped character entity references.
+
+###### Defaults
 
 Post-processing may be needed for defaults based on the use case and/or if you want to take advantage of the new
 shortcuts.xml features (e.g. `targetClass` fulfillment).
