@@ -90,8 +90,8 @@ data class CapabilityIntent(
     @set:XmlElement
     var parameter: List<Parameter> = mutableListOf(),
 
-    @set:XmlElement
-    var extra: List<Extra> = mutableListOf(),
+    @set:XmlElement(name="extra")
+    var extras: List<Extra> = mutableListOf(),
 )
 
 data class Slice(

@@ -56,6 +56,16 @@ private fun createCapabilityIntentFromFulfillment(
     action: Action
 ): CapabilityIntent {
     val urlTemplate = fulfillment.urlTemplate
+    val extras = mutableListOf<Extra>()
+    // Currently only requiredForegroundActivity is whitelisted for <extra>
+    if (!fulfillment.requiredForegroundActivity.isNullOrEmpty()) {
+        extras.add(
+            Extra(
+                key = "requiredForegroundActivity",
+                value = fulfillment.requiredForegroundActivity
+            )
+        )
+    }
     return CapabilityIntent(
         action = ANDROID_ACTION_VIEW_DEFAULT_INTENT,
         urlTemplate = if (!urlTemplate.isNullOrEmpty()) UrlTemplate(urlTemplate) else null,
@@ -65,7 +75,8 @@ private fun createCapabilityIntentFromFulfillment(
                 action.intentName ?: DEFAULT_INTENT_NAME,
                 action.parameters
             )
-        }
+        },
+        extras = extras
     )
 }
 
