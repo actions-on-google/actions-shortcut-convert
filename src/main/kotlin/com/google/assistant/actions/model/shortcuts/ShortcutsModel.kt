@@ -59,13 +59,13 @@ data class Shortcut(
     @set:XmlAttribute(namespace = ANDROID_NAMESPACE_URI)
     var disabledMessage: String? = null,
 
-    @set:XmlElement
+    @set:XmlElement(name = "intent")
     var intents: List<ShortcutIntent> = mutableListOf(),
 
     @set:XmlElement(name = "capability-binding")
     var capabilityBindings: List<CapabilityBinding> = mutableListOf(),
 
-    @set:XmlElement
+    @set:XmlElement(name = "extra")
     var extras: List<Extra> = mutableListOf(),
 )
 
@@ -126,7 +126,6 @@ data class ShortcutIntent(
 
     @set:XmlAttribute(namespace = ANDROID_NAMESPACE_URI)
     var data: String? = null,
-
 
     @set:XmlElement(name = "url-template")
     var urlTemplate: UrlTemplate? = null,

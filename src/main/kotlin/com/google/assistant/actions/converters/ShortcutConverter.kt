@@ -58,8 +58,7 @@ private fun addShortcutsFromEntitySets(
             // No shortcut created for this identifier, proceed with adding new shortcut.
             val shortcut = Shortcut(
                 shortcutId = id.ifEmpty { "YOUR_SHORTCUT_ID_" + shortcutIdCount++ },
-                shortcutShortLabel = "YOUR_SHORT_LABEL",
-                shortcutLongLabel = entity.name ?: entity.alternateName ?: "",
+                shortcutShortLabel = "YOUR_SHORTCUT_SHORT_LABEL",
                 enabled = "false",
                 intents = mutableListOf(intent),
                 capabilityBindings = capabilityBindings,

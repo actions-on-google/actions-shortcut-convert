@@ -17,20 +17,20 @@ for more details on the new XML format.
 
 ## Usage
 
-#### Command
+### Command
 
 Once your environment is set up, run this command from the root directory of the project to convert your actions.xml:
 
 `./gradlew run -Pactions=<path_to_actions.xml> -Pshortcuts=<path_to_shortcuts.xml>`
 
-#### Verifying
+### Verifying
 
 Manually you'll need to review your new shortcuts.xml as well as test the output in the
 [App Actions Test Tool](https://developers.google.com/assistant/app/test-tool).
 
-##### Post-processing and Manual Inspection
+### Post-processing and Manual Inspection
 
-###### XML Character Entity References
+#### XML Character Entity References
 
 The converter escapes any literal `&` by converting it to `&amp;` and assumes any sequence of 10 characters surrounded
 by `&` and `;` is a XML entity
@@ -40,18 +40,26 @@ It is *highly* recommended that input actions.xml is well-formed XML with proper
 converter escaped characters as intended, it is also recommended that you verify that the generated shortcuts.xml
 contains properly escaped character entity references.
 
-###### Defaults
+#### Defaults
 
 Post-processing may be needed for defaults based on the use case and/or if you want to take advantage of the new
 shortcuts.xml features (e.g. `targetClass` fulfillment).
 
 Field that require manual post-processing in the generated shortcuts.xml will be in the format of `YOUR_<FIELD_NAME>`.
-For example, for `shortLabel`, you will see `YOUR_SHORT_LABEL`. To quickly find the fields that require post-processing,
+For example, for `shortcutShortLabel`, you will see `YOUR_SHORTCUT_SHORT_LABEL`. To quickly find the fields that require post-processing,
 you can do a search for`"YOUR_".`
 
 Please check out the
 [shortcuts.xml documentation](https://developers.google.com/assistant/app/)
 to get a better idea on new features.
+
+#### List of XML elements to post-process
+See shortcuts.xml [schema](https://developers.google.com/assistant/app/action-schema#schema) for details on the elements listed below.
+##### Mandatory post-processing
+* `shortcutShortLabel` attribute of `<shortcut>`
+
+##### Optional post-processing
+* `android:action` attribute of `<intent>` tag within `<capability>` and `<shortcut>`. This currently defaults to `android.intent.action.VIEW`
 
 ## Tests
 

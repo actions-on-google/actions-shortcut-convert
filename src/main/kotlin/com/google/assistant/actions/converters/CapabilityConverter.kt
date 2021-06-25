@@ -7,8 +7,8 @@ import com.google.assistant.actions.model.actions.Fulfillment
 import com.google.assistant.actions.model.actions.ParameterMapping
 import com.google.assistant.actions.model.shortcuts.*
 
-fun convertActionsToCapabilities(actions: ActionsRoot): List<Capability> {
-    return actions.actions.map { action -> convertActionToCapability(action) }
+fun convertActionsToCapabilities(actionsRoot: ActionsRoot): List<Capability> {
+    return actionsRoot.actions.map { action -> convertActionToCapability(action) }
 }
 
 private fun convertActionToCapability(action: Action): Capability {
