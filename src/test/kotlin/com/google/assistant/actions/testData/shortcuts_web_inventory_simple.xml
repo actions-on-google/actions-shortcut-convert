@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="app">
+    <capability android:name="actions.intent.ORDER_MENU_ITEM">
+        <intent android:action="android.intent.action.VIEW">
+            <parameter android:name="menuItem.name">
+                <data android:pathPattern="https://www.fit-actions.com/product/.*"/>
+            </parameter>
+        </intent>
+    </capability>
+</shortcuts>

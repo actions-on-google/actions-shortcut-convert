@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<actions>
+    <!-- Web inventory -->
+    <action intentName="actions.intent.ORDER_MENU_ITEM">
+        <parameter name="menuItem.name">
+            <entity-set-reference urlFilter="https://www.fit-actions.com/product/.*"/>
+        </parameter>
+
+        <!-- Use URL from web match for deep link fulfillment -->
+        <fulfillment urlTemplate="{@url}"/>
+    </action>
+</actions>
