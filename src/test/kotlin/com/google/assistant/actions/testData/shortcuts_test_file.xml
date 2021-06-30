@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="app">
     <capability android:name="actions.intent.EXERCISE">
         <intent android:action="android.intent.action.VIEW">
             <parameter android:key="exerciseType" android:mimeType="text/*" android:name="exercise.name"/>
@@ -11,23 +11,23 @@
             <url-template android:value="https://fit-actions.firebaseapp.com/stop"/>
         </intent>
     </capability>
-    <shortcut android:enabled="false" android:shortcutId="RUNNING" android:shortcutLongLabel="@string/activity_running" android:shortcutShortLabel="YOUR_SHORT_LABEL">
+    <shortcut android:enabled="false" android:shortcutId="RUNNING" android:shortcutShortLabel="YOUR_SHORTCUT_SHORT_LABEL">
         <capability-binding android:key="actions.intent.EXERCISE">
             <parameter-binding android:key="exercise.name" android:value="@string/activity_running"/>
         </capability-binding>
-        <intents android:action="android.intent.action.VIEW"/>
+        <intent android:action="android.intent.action.VIEW"/>
     </shortcut>
-    <shortcut android:enabled="false" android:shortcutId="WALKING" android:shortcutLongLabel="@string/activity_walking" android:shortcutShortLabel="YOUR_SHORT_LABEL">
+    <shortcut android:enabled="false" android:shortcutId="WALKING" android:shortcutShortLabel="YOUR_SHORTCUT_SHORT_LABEL">
         <capability-binding android:key="actions.intent.EXERCISE">
             <parameter-binding android:key="exercise.name" android:value="@string/activity_walking"/>
         </capability-binding>
-        <extras android:key="sameAs" android:value="http://schema.googleapis.com/WalkingActivity"/>
-        <intents android:action="android.intent.action.VIEW" android:data="myapp://deeplink/one"/>
+        <extra android:key="sameAs" android:value="http://schema.googleapis.com/WalkingActivity"/>
+        <intent android:action="android.intent.action.VIEW" android:data="myapp://deeplink/one"/>
     </shortcut>
-    <shortcut android:enabled="false" android:shortcutId="CYCLING" android:shortcutLongLabel="@string/activity_cycling" android:shortcutShortLabel="YOUR_SHORT_LABEL">
+    <shortcut android:enabled="false" android:shortcutId="CYCLING" android:shortcutShortLabel="YOUR_SHORTCUT_SHORT_LABEL">
         <capability-binding android:key="actions.intent.EXERCISE">
             <parameter-binding android:key="exercise.name" android:value="@string/activity_cycling"/>
         </capability-binding>
-        <intents android:action="android.intent.action.VIEW"/>
+        <intent android:action="android.intent.action.VIEW"/>
     </shortcut>
 </shortcuts>
