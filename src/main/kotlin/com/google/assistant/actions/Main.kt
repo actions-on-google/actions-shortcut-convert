@@ -25,4 +25,7 @@ fun main(args: Array<String>) {
     val actionsRoot = processActionsXml(actionsFile).use { readActions(it) }
     val shortcutsRoot = convertActionsToShortcuts(actionsRoot)
     shortcutsFile.outputStream().use { writeShortcuts(shortcutsRoot, it) }
+
+    println(createInfoMessage(ACTIONS_XML_CONVERTED_SUCCESS_MESSAGE))
+    println(createInfoMessage(CHECK_README_MESSAGE))
 }
