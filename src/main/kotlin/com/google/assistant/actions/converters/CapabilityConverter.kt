@@ -19,7 +19,7 @@ private fun convertActionToCapability(action: Action): Capability {
         val urlTemplate = fulfillment.urlTemplate
         if (fulfillment.fulfillmentMode == SLICE_FULFILLMENT) {
             slices.add(createSliceFromFulfillment(fulfillment, action))
-        } else if (!urlTemplate.isNullOrEmpty() && urlTemplate == AT_URL_FULFILLMENT) {
+        } else if (isAtUrlFulfillment(urlTemplate) && usesInlineInventory(action.parameters)) {
             shortcutFulfillments = createShortcutFulfillmentsFromAction(action)
         } else {
             capabilityIntents.add(createCapabilityIntentFromFulfillment(fulfillment, action))
@@ -43,7 +43,7 @@ private fun createShortcutFulfillmentsFromAction(action: Action): MutableList<Sh
         shortcutFulfillments.add(
             ShortcutFulfillment(
                 parameter = Parameter(
-                    name = if (!paramName.isNullOrEmpty()) paramName else "YOUR_PARAMETER_NAME"
+                    name = if (!paramName.isNullOrEmpty()) paramName else "YOUR_PARAMETER_NAME" // TODO: change to constant
                 )
             )
         )
@@ -68,15 +68,42 @@ private fun createCapabilityIntentFromFulfillment(
     }
     return CapabilityIntent(
         action = ANDROID_ACTION_VIEW_DEFAULT_INTENT,
-        urlTemplate = if (!urlTemplate.isNullOrEmpty()) UrlTemplate(urlTemplate) else null,
-        parameter = fulfillment.parameterMappings.map { parameterMapping ->
-            convertParameterMappingToParameter(
-                parameterMapping,
-                action.intentName ?: DEFAULT_INTENT_NAME,
-                action.parameters
-            )
-        },
+        urlTemplate  = resolveUrlTemplateForFulfillmentType(urlTemplate),
+        parameter = createParametersForFulfillment(fulfillment, action),
         extras = extras
+    )
+}
+
+private fun resolveUrlTemplateForFulfillmentType(urlTemplate: String?) : UrlTemplate? {
+    if (isAtUrlFulfillment(urlTemplate) || urlTemplate.isNullOrEmpty())
+        return null
+    return UrlTemplate(urlTemplate)
+}
+
+private fun createParametersForFulfillment(
+    fulfillment: Fulfillment,
+    action: Action
+): List<Parameter> {
+    val parameters = mutableListOf<Parameter>()
+    val actionParameters = action.parameters
+    fulfillment.parameterMappings.map { parameterMapping ->
+        parameters.add(convertParameterMappingToParameter(
+            parameterMapping,
+            action.intentName ?: DEFAULT_INTENT_NAME,
+            actionParameters
+        ))}
+    if (isAtUrlFulfillment(fulfillment.urlTemplate) && usesWebInventory(actionParameters)){
+        parameters.add(createParameterForWebInventory(actionParameters))
+    }
+    return parameters
+}
+
+private fun createParameterForWebInventory(
+    actionParameters: List<com.google.assistant.actions.model.actions.Parameter>): Parameter {
+    val actionParamName = actionParameters.firstOrNull()?.name
+    return Parameter(
+        name = if (!actionParamName.isNullOrEmpty()) actionParamName else "YOUR_PARAMETER_NAME",
+        data = Data(pathPattern = actionParameters.firstOrNull()?.entitySetReference?.urlFilter)
     )
 }
 
@@ -138,4 +165,26 @@ private fun resolveActionParameterForIntentParameterName(
     actionParameters: List<com.google.assistant.actions.model.actions.Parameter>
 ): com.google.assistant.actions.model.actions.Parameter? {
     return actionParameters.find { parameter -> parameter.name == parameterName }
+}
+
+private fun isAtUrlFulfillment(urlTemplate : String?) : Boolean {
+    return !urlTemplate.isNullOrEmpty() && urlTemplate == AT_URL_FULFILLMENT
+}
+
+/**
+ * Only one parameter supported for inline inventory with {@url} fulfillment
+ */
+private fun usesInlineInventory(
+    parameters: List<com.google.assistant.actions.model.actions.Parameter>
+): Boolean {
+    return !parameters.firstOrNull()?.entitySetReference?.entitySetId.isNullOrEmpty()
+}
+
+/**
+ * Only one parameter supported for web inventory with {@url} fulfillment
+ */
+private fun usesWebInventory(
+    parameters: List<com.google.assistant.actions.model.actions.Parameter>
+): Boolean {
+    return !parameters.firstOrNull()?.entitySetReference?.urlFilter.isNullOrEmpty()
 }
