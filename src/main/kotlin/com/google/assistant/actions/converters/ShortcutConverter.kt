@@ -2,6 +2,7 @@ package com.google.assistant.actions.converters
 
 import com.google.assistant.actions.ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE
 import com.google.assistant.actions.ANDROID_ACTION_VIEW_DEFAULT_INTENT
+import com.google.assistant.actions.DEFAULT_SHORTCUT_SHORT_LABEL
 import com.google.assistant.actions.model.actions.Action
 import com.google.assistant.actions.model.actions.ActionsRoot
 import com.google.assistant.actions.model.actions.Entity
@@ -58,7 +59,7 @@ private fun addShortcutsFromEntitySets(
             // No shortcut created for this identifier, proceed with adding new shortcut.
             val shortcut = Shortcut(
                 shortcutId = id.ifEmpty { "YOUR_SHORTCUT_ID_" + shortcutIdCount++ },
-                shortcutShortLabel = "YOUR_SHORTCUT_SHORT_LABEL",
+                shortcutShortLabel = DEFAULT_SHORTCUT_SHORT_LABEL,
                 enabled = "false",
                 intents = mutableListOf(intent),
                 capabilityBindings = capabilityBindings,
