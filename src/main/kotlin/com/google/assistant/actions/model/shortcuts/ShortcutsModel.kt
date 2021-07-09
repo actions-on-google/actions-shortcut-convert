@@ -178,7 +178,7 @@ data class Extra(
 data class CapabilityBinding(
 
     @set:XmlAttribute(required = true, namespace = ANDROID_NAMESPACE_URI)
-    var key: String?,
+    var key: String? = null,
 
     @set:XmlElement(name = "parameter-binding")
     var parameterBinding: List<ParameterBinding> = mutableListOf(),
@@ -191,12 +191,12 @@ data class CapabilityBinding(
 data class ParameterBinding(
 
     @set:XmlAttribute(required = false, namespace = ANDROID_NAMESPACE_URI)
-    var key: String?,
+    var key: String? = null,
 
     @set:XmlAttribute(required = true, namespace = ANDROID_NAMESPACE_URI)
-    var value: String?,
+    var value: String? = null,
 
-    )
+)
 
 
 //
@@ -206,7 +206,7 @@ data class ParameterBinding(
 data class Data(
 
     @set:XmlAttribute(namespace = ANDROID_NAMESPACE_URI)
-    var pathPattern: String?,
+    var pathPattern: String? = null,
 )
 
 class AndroidNamespaceMapper : NamespacePrefixMapper() {

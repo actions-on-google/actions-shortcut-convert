@@ -32,11 +32,10 @@ private const val ENTITY_2_NAME = "entity2Name"
 private const val ENTITY_2_URL = "entity2Url"
 private const val ENTITY_2_ALTERNATE_NAME = "entity2AltName"
 
-
 class ConvertActionsToShortcutsTest {
 
     @Test
-    fun test_basicCapability_withDeeplink() {
+    fun test_simpleCapability_withDeeplink() {
         val actionsRoot = ActionsRoot(
             actions = listOf(
                 Action(
@@ -72,6 +71,7 @@ class ConvertActionsToShortcutsTest {
         assertEquals(expectedShortcutsRoot, shortcutsRoot)
     }
 
+    // TODO: Consider converting actions and shortcuts roots into test file equivalents.
     @Test
     fun test_simpleCapability() {
         val actionsRoot = ActionsRoot(
@@ -239,5 +239,37 @@ class ConvertActionsToShortcutsTest {
         val shortcutsRoot = convertActionsToShortcuts(actionsRoot)
 
         assertEquals(expectedShortcutsRoot, shortcutsRoot)
+    }
+
+    @Test
+    fun test_standardActions_usingSampleFiles() {
+        val resourceReader = ResourceReaderUtils()
+
+        val actionsRoot =
+            resourceReader.readActionsResource(getPathForTestDataResource("actions_test_file.xml"))
+        val expectedShortcutsRoot =
+            resourceReader.readShortcutsResource(getPathForTestDataResource("shortcuts_test_file.xml"))
+
+        val actualShortcutsRoot = convertActionsToShortcuts(actionsRoot)
+
+        assertEquals(expectedShortcutsRoot, actualShortcutsRoot)
+    }
+
+    @Test
+    fun test_webInventory_usingSampleFiles() {
+        val resourceReader = ResourceReaderUtils()
+
+        val actionsRoot =
+            resourceReader.readActionsResource(getPathForTestDataResource("actions_web_inventory_simple.xml"))
+        val expectedShortcutsRoot =
+            resourceReader.readShortcutsResource(getPathForTestDataResource("shortcuts_web_inventory_simple.xml"))
+
+        val actualShortcutsRoot = convertActionsToShortcuts(actionsRoot)
+
+        assertEquals(expectedShortcutsRoot, actualShortcutsRoot)
+    }
+
+    private fun getPathForTestDataResource(filename : String) : String {
+        return "/testData/$filename"
     }
 }
