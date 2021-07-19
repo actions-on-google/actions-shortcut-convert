@@ -1,8 +1,6 @@
 package com.google.assistant.actions.converters
 
-import com.google.assistant.actions.ACTIONS_BUILT_IN_INTENT_RESERVED_NAMESPACE
-import com.google.assistant.actions.ANDROID_ACTION_VIEW_DEFAULT_INTENT
-import com.google.assistant.actions.DEFAULT_SHORTCUT_SHORT_LABEL
+import com.google.assistant.actions.*
 import com.google.assistant.actions.model.actions.Action
 import com.google.assistant.actions.model.actions.ActionsRoot
 import com.google.assistant.actions.model.actions.Entity
@@ -100,7 +98,7 @@ private fun createExtraFromEntity(entity: Entity): Extra? {
         return null
     }
     return Extra(
-        key = "sameAs",
+        key = SAME_AS_KEY,
         value = entity.sameAs
     )
 }
@@ -123,8 +121,8 @@ private fun createParameterBinding(
         return ParameterBinding(key = parameter.name, value = matchingEntity?.name)
     }
     return ParameterBinding(
-        key = "YOUR_PARAMETER_BINDING_KEY",
-        value = "YOUR_PARAMETER_BINDING_VALUE"
+        key = DEFAULT_PARAMETER_BINDING_KEY,
+        value = DEFAULT_PARAMETER_BINDING_VALUE
     )
 }
 

@@ -43,7 +43,7 @@ private fun createShortcutFulfillmentsFromAction(action: Action): MutableList<Sh
         shortcutFulfillments.add(
             ShortcutFulfillment(
                 parameter = Parameter(
-                    name = if (!paramName.isNullOrEmpty()) paramName else "YOUR_PARAMETER_NAME" // TODO: change to constant
+                    name = if (!paramName.isNullOrEmpty()) paramName else DEFAULT_PARAMETER_NAME
                 )
             )
         )
@@ -61,7 +61,7 @@ private fun createCapabilityIntentFromFulfillment(
     if (!fulfillment.requiredForegroundActivity.isNullOrEmpty()) {
         extras.add(
             Extra(
-                key = "requiredForegroundActivity",
+                key = REQUIRED_FOREGROUND_ACTIVITY_KEY,
                 value = fulfillment.requiredForegroundActivity
             )
         )
@@ -102,7 +102,7 @@ private fun createParameterForWebInventory(
     actionParameters: List<com.google.assistant.actions.model.actions.Parameter>): Parameter {
     val actionParamName = actionParameters.firstOrNull()?.name
     return Parameter(
-        name = if (!actionParamName.isNullOrEmpty()) actionParamName else "YOUR_PARAMETER_NAME",
+        name = if (!actionParamName.isNullOrEmpty()) actionParamName else DEFAULT_PARAMETER_NAME,
         data = Data(pathPattern = actionParameters.firstOrNull()?.entitySetReference?.urlFilter)
     )
 }
@@ -155,7 +155,7 @@ private fun resolveMimeType(
         if (!actionParameter?.entitySetReference?.entitySetId.isNullOrEmpty())
             return null
         else {
-            actionParameter?.type ?: "YOUR_MIME_TYPE"
+            actionParameter?.type ?: DEFAULT_MIME_TYPE
         }
     }
 }
