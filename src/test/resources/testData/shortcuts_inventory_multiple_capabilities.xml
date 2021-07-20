@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="app">
+    <capability android:name="actions.intent.INTENT1">
+        <intent android:action="android.intent.action.VIEW">
+            <extra android:key="requiredForegroundActivity" android:value="com.myapp/com.myapp.Activity1"/>
+            <parameter android:key="name" android:mimeType="text/*" android:name="intent.param" shortcutMatchRequired="true"/>
+            <url-template android:value="myapp://dothing1{?param}"/>
+        </intent>
+    </capability>
+    <capability android:name="actions.intent.INTENT2">
+        <intent android:action="android.intent.action.VIEW">
+            <extra android:key="requiredForegroundActivity" android:value="com.myapp/com.myapp.Activity2"/>
+            <parameter android:key="param" android:mimeType="text/*" android:name="intent.param" shortcutMatchRequired="true"/>
+            <url-template android:value="myapp://dothing2{?param}"/>
+        </intent>
+    </capability>
+    <shortcut android:enabled="false" android:shortcutId="ID1" android:shortcutShortLabel="YOUR_SHORTCUT_SHORT_LABEL">
+        <capability-binding android:key="actions.intent.INTENT1">
+            <parameter-binding android:key="intent.param" android:value="name1"/>
+        </capability-binding>
+        <capability-binding android:key="actions.intent.INTENT2">
+            <parameter-binding android:key="intent.param" android:value="name1"/>
+        </capability-binding>
+        <intent android:action="android.intent.action.VIEW" android:data="myapp://url1"/>
+    </shortcut>
+    <shortcut android:enabled="false" android:shortcutId="ID2" android:shortcutShortLabel="YOUR_SHORTCUT_SHORT_LABEL">
+        <capability-binding android:key="actions.intent.INTENT1">
+            <parameter-binding android:key="intent.param" android:value="name2"/>
+        </capability-binding>
+        <capability-binding android:key="actions.intent.INTENT2">
+            <parameter-binding android:key="intent.param" android:value="name2"/>
+        </capability-binding>
+        <intent android:action="android.intent.action.VIEW" android:data="myapp://url2"/>
+    </shortcut>
+    <shortcut android:enabled="false" android:shortcutId="ID3" android:shortcutShortLabel="YOUR_SHORTCUT_SHORT_LABEL">
+        <capability-binding android:key="actions.intent.INTENT1">
+            <parameter-binding android:key="intent.param" android:value="name3"/>
+        </capability-binding>
+        <capability-binding android:key="actions.intent.INTENT2">
+            <parameter-binding android:key="intent.param" android:value="name3"/>
+        </capability-binding>
+        <intent android:action="android.intent.action.VIEW" android:data="myapp://url3"/>
+    </shortcut>
+</shortcuts>

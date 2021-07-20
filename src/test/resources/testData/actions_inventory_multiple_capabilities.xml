@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<actions>
+    <action intentName="actions.intent.INTENT1">
+        <fulfillment
+                fulfillmentMode="actions.fulfillment.DEEPLINK"
+                requiredForegroundActivity="com.myapp/com.myapp.Activity1"
+                urlTemplate="myapp://dothing1{?param}">
+            <parameter-mapping
+                    entityMatchRequired="true"
+                    intentParameter="intent.param"
+                    urlParameter="name"/>
+        </fulfillment>
+        <parameter name="intent.param">
+            <entity-set-reference entitySetId="EntitySetId"/>
+        </parameter>
+    </action>
+
+    <action intentName="actions.intent.INTENT2">
+        <fulfillment
+                fulfillmentMode="actions.fulfillment.DEEPLINK"
+                requiredForegroundActivity="com.myapp/com.myapp.Activity2"
+                urlTemplate="myapp://dothing2{?param}">
+            <parameter-mapping
+                    entityMatchRequired="true"
+                    intentParameter="intent.param"
+                    urlParameter="param"/>
+        </fulfillment>
+        <parameter name="intent.param">
+            <entity-set-reference entitySetId="EntitySetId"/>
+        </parameter>
+    </action>
+
+    <entity-set entitySetId="EntitySetId">
+        <entity
+                alternateName="alt1"
+                identifier="ID1"
+                name="name1"
+                url="myapp://url1">
+        </entity>
+        <entity
+                alternateName="alt2"
+                identifier="ID2"
+                name="name2"
+                url="myapp://url2">
+        </entity>
+        <entity
+                alternateName="alt3"
+                identifier="ID3"
+                name="name3"
+                url="myapp://url3">
+        </entity>
+    </entity-set>
+</actions>

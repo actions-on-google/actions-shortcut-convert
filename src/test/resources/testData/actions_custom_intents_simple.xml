@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<actions>
+    <action intentName="custom.actions.intent.EXAMPLE_INTENT"
+            queryPatterns="@array/ExampleQueries">
+        <parameter name="number1" type="https://schema.org/Number" />
+        <parameter name="text1" type="https://schema.org/Text" />
+        <fulfillment urlTemplate="http://myapp.com{?number_of_items,item_name}">
+            <parameter-mapping intentParameter="number1" urlParameter="number_of_items" />
+            <parameter-mapping intentParameter="text1" urlParameter="item_name" />
+        </fulfillment>
+    </action>
+</actions>

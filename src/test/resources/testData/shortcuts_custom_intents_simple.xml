@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="app">
+    <capability android:name="custom.actions.intent.EXAMPLE_INTENT" app:queryPatterns="@array/ExampleQueries">
+        <intent android:action="android.intent.action.VIEW">
+            <parameter android:key="number_of_items" android:mimeType="https://schema.org/Number" android:name="number1"/>
+            <parameter android:key="item_name" android:mimeType="https://schema.org/Text" android:name="text1"/>
+            <url-template android:value="http://myapp.com{?number_of_items,item_name}"/>
+        </intent>
+    </capability>
+</shortcuts>
