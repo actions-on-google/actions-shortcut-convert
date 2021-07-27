@@ -84,8 +84,6 @@ private fun createCapabilityBindingsFromEntity(
 }
 
 private fun createIntentFromEntity(entity: Entity?): ShortcutIntent {
-    // TODO(paullucas): Handle custom vs BII cases better here and update based on if intentName
-    //  starts with actions.
     return ShortcutIntent(
         // Defaulting to android.intent.action.VIEW and allowing user to override
         action = ANDROID_ACTION_VIEW_DEFAULT_INTENT,

@@ -20,7 +20,6 @@ fun processActionsXml(actionsFile: File) : InputStream {
     if (actionsFileAsString.contains(COMMENT_MATCHER_REGEX.toRegex())){
         System.err.println(createWarningMessage(COMMENTS_NOT_TRANSFERRED_MESSAGE))
     }
-    // TODO(tanub): Add unit tests
     val escapedActions = actionsFileAsString.replace(LITERAL_AMPERSAND_MATCHER_REGEX.toRegex(), ESCAPED_AMPERSAND)
     return ByteArrayInputStream(escapedActions.toByteArray(Charsets.UTF_8))
 }

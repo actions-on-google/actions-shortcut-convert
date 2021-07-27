@@ -129,7 +129,6 @@ private fun convertParameterMappingToParameter(
     actionParameters: List<com.google.assistant.actions.model.actions.Parameter>
 ): Parameter {
     return Parameter(
-        // TODO(tanub): Cross-check examples for intentParameter name
         name = parameterMapping.intentParameter,
         key = parameterMapping.urlParameter,
         mimeType = resolveMimeType(intentName, parameterMapping, actionParameters),
