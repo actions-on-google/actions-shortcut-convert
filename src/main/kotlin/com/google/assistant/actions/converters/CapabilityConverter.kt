@@ -71,7 +71,6 @@ private fun createCapabilityIntentFromFulfillment(
 ): CapabilityIntent {
     val urlTemplate = fulfillment.urlTemplate
     val extras = mutableListOf<Extra>()
-    // Currently only requiredForegroundActivity is whitelisted for <extra>
     if (!fulfillment.requiredForegroundActivity.isNullOrEmpty()) {
         extras.add(
             Extra(
