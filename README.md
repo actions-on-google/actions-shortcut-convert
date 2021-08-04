@@ -7,20 +7,15 @@ Check out the
 [shortcuts.xml documentation](https://developers.google.com/assistant/app/action-schema)
 for more details on the new XML format.
 
-## Setup (Recommended)
+## Requirements
 
-* IntelliJ IDE (Or any Java/Kotlin IDE)
-* Configure IDE settings for Gradle to use JVM 1.8 or greater
-  (Settings/Preferences -> Build/Execution/Deployment -> Build Tools -> Gradle)
-* Select JDK corresponding to JVM 1.8 (or greater) in Project Structure dialog
-  (File -> Project Structure -> Platform Settings -> SDKs)
+* JVM compatible with Java 8
 
 ## Usage
 
 ### Command
 
-Once your environment is set up, run this command from the root directory of the project to convert your actions.xml:
-
+Run this command from the root directory of the project to convert your actions.xml:
 `./gradlew run -Pactions=<path_to_actions.xml> -Pshortcuts=<path_to_shortcuts.xml>`
 
 ### Verifying
